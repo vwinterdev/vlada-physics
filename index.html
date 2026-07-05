@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Владислава Чахова — репетитор по физике онлайн · подготовка к ЕГЭ и ОГЭ</title>
+  <meta name="description" content="Онлайн-подготовка к ЕГЭ и ОГЭ по физике с преподавателем МФТИ. 11 лет опыта, средний балл учеников 87, авторская методика через физический смысл. Пробный урок бесплатно." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink:    '#0A1A33',   // глубокий синий — основной текст / тёмные секции
+            navy:   '#0E2A52',
+            steel:  '#33507D',
+            teal:   '#13B7B0',   // бирюзовый акцент
+            'teal-d':'#0C8A85',
+            amber:  '#FF7A3D',   // оранжевый CTA
+            'amber-d':'#EA5F1F',
+            paper:  '#F6F8FC',   // светлый фон "воздуха"
+            mist:   '#E7EDF6',
+          },
+          fontFamily: {
+            sans: ['system-ui','-apple-system','Segoe UI','Roboto','Helvetica Neue','Arial','sans-serif'],
+            mono: ['ui-monospace','SFMono-Regular','Menlo','Consolas','monospace'],
+          },
+          boxShadow: {
+            soft: '0 10px 40px -12px rgba(10,26,51,0.18)',
+            lift: '0 24px 60px -18px rgba(10,26,51,0.28)',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+    /* --- Signature: орбитальная схема в hero --- */
+    .orbit { transform-origin: center; }
+    @keyframes spin-slow  { to { transform: rotate(360deg); } }
+    @keyframes spin-rev   { to { transform: rotate(-360deg); } }
+    .orbit-1 { animation: spin-slow 18s linear infinite; }
+    .orbit-2 { animation: spin-rev  26s linear infinite; }
+    .orbit-3 { animation: spin-slow 34s linear infinite; }
+
+    /* лёгкое дыхание ядра */
+    @keyframes pulse-core { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+    .core { animation: pulse-core 6s ease-in-out infinite; }
+
+    /* --- Лента формул --- */
+    @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .ticker-track { animation: drift 40s linear infinite; }
+
+    /* --- Scroll reveal --- */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    .grid-physics {
+      background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 46px 46px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .orbit-1,.orbit-2,.orbit-3,.core,.ticker-track { animation: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+    .link-underline { background-image: linear-gradient(currentColor,currentColor); background-size:0% 2px; background-position:0 100%; background-repeat:no-repeat; transition: background-size .3s; }
+    .link-underline:hover { background-size:100% 2px; }
+  </style>
+</head>
+
+<body class="bg-paper text-ink font-sans antialiased selection:bg-teal/25">
+
+  <!-- ================= NAV ================= -->
+  <header class="fixed top-0 inset-x-0 z-50 transition-all" id="nav">
+    <div class="mx-auto max-w-6xl px-5">
+      <div class="mt-3 flex items-center justify-between rounded-2xl border border-white/10 bg-ink/85 px-4 py-3 backdrop-blur-md shadow-soft">
+        <a href="#hero" class="flex items-center gap-2.5 text-white">
+          <span class="grid h-9 w-9 place-items-center rounded-xl bg-teal/15 ring-1 ring-teal/40">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-teal" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/>
+              <ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(30 12 12)"/>
+              <ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(-30 12 12)"/>
+            </svg>
+          </span>
+          <span class="font-semibold tracking-tight">В.&nbsp;Чахова<span class="text-teal">.физика</span></span>
+        </a>
+
+        <nav class="hidden items-center gap-7 text-sm text-white/80 md:flex">
+          <a href="#why"     class="link-underline hover:text-white">Почему я</a>
+          <a href="#results" class="link-underline hover:text-white">Результаты</a>
+          <a href="#reviews" class="link-underline hover:text-white">Отзывы</a>
+          <a href="#process" class="link-underline hover:text-white">Занятия</a>
+          <a href="#contact" class="link-underline hover:text-white">Контакты</a>
+        </nav>
+
+        <a href="#contact" class="hidden rounded-xl bg-amber px-4 py-2 text-sm font-semibold text-white shadow-soft transition hover:bg-amber-d md:inline-block">Пробный урок</a>
+
+        <button id="burger" aria-label="Меню" class="grid h-10 w-10 place-items-center rounded-xl text-white md:hidden">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+
+      <!-- mobile menu -->
+      <div id="mobile" class="mt-2 hidden overflow-hidden rounded-2xl border border-white/10 bg-ink/95 backdrop-blur-md shadow-soft md:hidden">
+        <nav class="flex flex-col p-2 text-white/85">
+          <a href="#why"     class="rounded-xl px-4 py-3 hover:bg-white/5">Почему я</a>
+          <a href="#results" class="rounded-xl px-4 py-3 hover:bg-white/5">Результаты</a>
+          <a href="#reviews" class="rounded-xl px-4 py-3 hover:bg-white/5">Отзывы</a>
+          <a href="#process" class="rounded-xl px-4 py-3 hover:bg-white/5">Занятия и тарифы</a>
+          <a href="#contact" class="rounded-xl px-4 py-3 hover:bg-white/5">Контакты</a>
+          <a href="#contact" class="mt-1 rounded-xl bg-amber px-4 py-3 text-center font-semibold">Записаться на пробный урок</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section id="hero" class="relative overflow-hidden bg-ink text-white">
+    <div class="absolute inset-0 grid-physics opacity-40"></div>
+    <div class="pointer-events-none absolute -top-40 -right-40 h-[36rem] w-[36rem] rounded-full bg-teal/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-52 -left-40 h-[32rem] w-[32rem] rounded-full bg-amber/10 blur-3xl"></div>
+
+    <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-5 pb-20 pt-32 md:pt-40 lg:grid-cols-[1.05fr_.95fr] lg:gap-8">
+      <!-- Left: текст -->
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full border border-teal/40 bg-teal/10 px-3 py-1 text-xs font-medium text-teal">
+          <span class="h-1.5 w-1.5 rounded-full bg-teal"></span> Онлайн · Zoom + интерактивная доска
+        </span>
+
+        <h1 class="mt-6 text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+          Физика — это&nbsp;<span class="relative whitespace-nowrap text-teal">логика<svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 8" preserveAspectRatio="none"><path d="M2 6 Q100 0 198 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>,<br class="hidden sm:block"> а не зубрёжка
+        </h1>
+
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
+          Готовлю школьников к <strong class="font-semibold text-white">ЕГЭ и ОГЭ по физике</strong> — разбираем задачи через физический смысл, а не заученные формулы. Индивидуальные и групповые занятия из любой точки мира.
+        </p>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="#contact" class="group inline-flex items-center justify-center gap-2 rounded-xl bg-amber px-6 py-3.5 font-semibold text-white shadow-lift transition hover:bg-amber-d">
+            Записаться на пробный урок
+            <svg viewBox="0 0 24 24" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#results" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-6 py-3.5 font-semibold text-white/90 transition hover:bg-white/5">
+            Результаты учеников
+          </a>
+        </div>
+
+        <p class="mt-4 text-sm text-white/50">Пробный урок бесплатно — на нём составим план и оценим текущий уровень.</p>
+      </div>
+
+      <!-- Right: signature орбиты + фото-плейсхолдер -->
+      <div class="relative mx-auto aspect-square w-full max-w-md">
+        <!-- орбиты -->
+        <svg viewBox="0 0 400 400" class="absolute inset-0 h-full w-full">
+          <g class="orbit orbit-1" style="transform-origin:200px 200px">
+            <ellipse cx="200" cy="200" rx="188" ry="78" fill="none" stroke="rgba(19,183,176,.35)" stroke-width="1.5" transform="rotate(20 200 200)"/>
+            <circle cx="12" cy="200" r="5" fill="#13B7B0" transform="rotate(20 200 200)"/>
+          </g>
+          <g class="orbit orbit-2" style="transform-origin:200px 200px">
+            <ellipse cx="200" cy="200" rx="188" ry="78" fill="none" stroke="rgba(255,122,61,.3)" stroke-width="1.5" transform="rotate(-45 200 200)"/>
+            <circle cx="388" cy="200" r="4" fill="#FF7A3D" transform="rotate(-45 200 200)"/>
+          </g>
+          <g class="orbit orbit-3" style="transform-origin:200px 200px">
+            <ellipse cx="200" cy="200" rx="150" ry="150" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1" stroke-dasharray="3 7"/>
+          </g>
+        </svg>
+
+        <!-- ядро: фото-плейсхолдер -->
+        <div class="core absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 sm:h-52 sm:w-52">
+          <div class="relative h-full w-full rounded-full bg-gradient-to-br from-navy to-ink ring-1 ring-white/15 shadow-lift">
+            <img src="assets/avatar.jpg" alt="Владислава Чахова — репетитор по физике"
+                 class="h-full w-full rounded-full object-cover" />
+            <span class="absolute inset-x-0 bottom-0 rounded-b-full bg-gradient-to-t from-ink/85 to-transparent pt-8 pb-4 text-center">
+              <span class="block text-sm font-semibold text-white">Владислава Чахова</span>
+              <span class="block text-xs text-white/60">МФТИ · физика</span>
+            </span>
+            <span class="absolute -right-1 top-6 rounded-lg bg-white px-2 py-1 font-mono text-[11px] font-semibold text-ink shadow-soft">11 лет</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- метрики -->
+    <div class="relative mx-auto max-w-6xl px-5 pb-16">
+      <div class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 lg:grid-cols-4">
+        <div class="bg-ink p-6">
+          <div class="font-mono text-3xl font-bold text-teal sm:text-4xl" data-count="87" data-suffix="">0</div>
+          <p class="mt-1 text-sm text-white/60">Средний балл ЕГЭ<br>у моих учеников</p>
+        </div>
+        <div class="bg-ink p-6">
+          <div class="font-mono text-3xl font-bold text-white sm:text-4xl" data-count="11" data-suffix="">0</div>
+          <p class="mt-1 text-sm text-white/60">Лет преподаю физику,<br>6 из них — онлайн</p>
+        </div>
+        <div class="bg-ink p-6">
+          <div class="font-mono text-3xl font-bold text-white sm:text-4xl" data-count="300" data-suffix="+">0</div>
+          <p class="mt-1 text-sm text-white/60">Выпускников<br>прошли подготовку</p>
+        </div>
+        <div class="bg-ink p-6">
+          <div class="font-mono text-3xl font-bold text-amber sm:text-4xl" data-count="94" data-suffix="%">0</div>
+          <p class="mt-1 text-sm text-white/60">Поступили<br>в желаемый вуз</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- лента формул -->
+    <div class="relative border-t border-white/10 bg-navy/50 py-3">
+      <div class="flex w-max ticker-track gap-10 whitespace-nowrap px-5 font-mono text-sm text-white/35">
+        <span>F = ma</span><span>E = mc²</span><span>pV = νRT</span><span>λ = h/p</span><span>a = v²/R</span><span>q = CU</span><span>W = qφ</span><span>x = A·cos(ωt+φ)</span><span>Φ = BS·cosα</span><span>E<sub>k</sub> = mv²/2</span>
+        <span aria-hidden="true">F = ma</span><span aria-hidden="true">E = mc²</span><span aria-hidden="true">pV = νRT</span><span aria-hidden="true">λ = h/p</span><span aria-hidden="true">a = v²/R</span><span aria-hidden="true">q = CU</span><span aria-hidden="true">W = qφ</span><span aria-hidden="true">x = A·cos(ωt+φ)</span><span aria-hidden="true">Φ = BS·cosα</span><span aria-hidden="true">E<sub>k</sub> = mv²/2</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHY ================= -->
+  <section id="why" class="mx-auto max-w-6xl px-5 py-24">
+    <div class="reveal max-w-2xl">
+      <span class="font-mono text-sm font-semibold text-teal-d">// почему выбирают меня</span>
+      <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Не заучиваем — понимаем</h2>
+      <p class="mt-4 text-lg leading-relaxed text-steel">За 11 лет я собрала систему, которая работает для любого уровня — от «еле тройка» до борьбы за сотку. Вот что получает каждый ученик.</p>
+    </div>
+
+    <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- card -->
+      <article class="reveal group rounded-2xl border border-mist bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-lift">
+        <div class="grid h-11 w-11 place-items-center rounded-xl bg-teal/10 text-teal-d ring-1 ring-teal/20">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3.5"/></svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold">Авторская методика</h3>
+        <p class="mt-2 text-sm leading-relaxed text-steel">Каждую задачу разбираем от физического смысла: что происходит, какие силы, куда идёт энергия. Формула становится следствием, а не заклинанием.</p>
+      </article>
+
+      <article class="reveal group rounded-2xl border border-mist bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-lift">
+        <div class="grid h-11 w-11 place-items-center rounded-xl bg-teal/10 text-teal-d ring-1 ring-teal/20">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold">Персональный план</h3>
+        <p class="mt-2 text-sm leading-relaxed text-steel">Начинаем с диагностики: вижу пробелы и цель по баллам. Дальше — маршрут именно под ученика, а не общий учебник «для всех».</p>
+      </article>
+
+      <article class="reveal group rounded-2xl border border-mist bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-lift">
+        <div class="grid h-11 w-11 place-items-center rounded-xl bg-teal/10 text-teal-d ring-1 ring-teal/20">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold">Вся структура ЕГЭ</h3>
+        <p class="mt-2 text-sm leading-relaxed text-steel">Отрабатываем все типы заданий — включая вторую часть с развёрнутым решением, где теряют больше всего баллов. Учу оформлять так, как ждёт эксперт.</p>
+      </article>
+
+      <article class="reveal group rounded-2xl border border-mist bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-lift">
+        <div class="grid h-11 w-11 place-items-center rounded-xl bg-teal/10 text-teal-d ring-1 ring-teal/20">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold">Пробники как на экзамене</h3>
+        <p class="mt-2 text-sm leading-relaxed text-steel">Регулярные пробные ЕГЭ в реальном формате и с таймингом. Проверяю по критериям ФИПИ и показываю, где именно теряются баллы.</p>
+      </article>
+
+      <article class="reveal group rounded-2xl border border-mist bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-lift">
+        <div class="grid h-11 w-11 place-items-center rounded-xl bg-teal/10 text-teal-d ring-1 ring-teal/20">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 1-2-2z"/><path d="M18 4v16M8 8h6M8 12h6"/></svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold">Конспекты и записи</h3>
+        <p class="mt-2 text-sm leading-relaxed text-steel">Доступ к базе конспектов по всем темам и к записям каждого занятия — можно вернуться и пересмотреть разбор в любой момент.</p>
+      </article>
+
+      <article class="reveal group rounded-2xl border border-mist bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-lift">
+        <div class="grid h-11 w-11 place-items-center rounded-xl bg-teal/10 text-teal-d ring-1 ring-teal/20">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold">Гибкий график</h3>
+        <p class="mt-2 text-sm leading-relaxed text-steel">Занимаемся онлайн из любого города и часового пояса. Время подбираем под ученика, при необходимости переносим без потери занятий.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= RESULTS ================= -->
+  <section id="results" class="relative overflow-hidden bg-ink text-white">
+    <div class="absolute inset-0 grid-physics opacity-30"></div>
+    <div class="pointer-events-none absolute -right-40 top-10 h-96 w-96 rounded-full bg-teal/15 blur-3xl"></div>
+
+    <div class="relative mx-auto max-w-6xl px-5 py-24">
+      <div class="reveal max-w-2xl">
+        <span class="font-mono text-sm font-semibold text-teal">// результаты, а не обещания</span>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Куда приходят ученики</h2>
+        <p class="mt-4 text-lg leading-relaxed text-white/65">Несколько историй с реальными цифрами. За каждой — месяцы работы и понятный маршрут от старта до результата.</p>
+      </div>
+
+      <!-- общие достижения -->
+      <div class="reveal mt-12 grid gap-5 sm:grid-cols-3">
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+          <div class="font-mono text-4xl font-bold text-teal">+32</div>
+          <p class="mt-2 text-sm text-white/60">Средний прирост балла за год подготовки</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+          <div class="font-mono text-4xl font-bold text-white">14</div>
+          <p class="mt-2 text-sm text-white/60">Стобалльников и учеников с баллом 95+</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+          <div class="font-mono text-4xl font-bold text-amber">МФТИ · МГУ · ИТМО</div>
+          <p class="mt-2 text-sm text-white/60">Вузы, куда чаще всего поступают выпускники</p>
+        </div>
+      </div>
+
+      <!-- кейсы -->
+      <div class="mt-8 grid gap-5 md:grid-cols-2">
+        <article class="reveal rounded-2xl border border-white/10 bg-gradient-to-br from-white/[.07] to-transparent p-6">
+          <div class="flex items-center gap-3 font-mono text-lg font-semibold">
+            <span class="text-white/50">45</span>
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-teal" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span class="text-teal">91 балл</span>
+          </div>
+          <p class="mt-3 text-white/75">Пришёл в 11 классе с твёрдой «тройкой» и без веры в физику. За год собрали базу заново, натренировали вторую часть — сдал на 91 и <strong class="text-white">поступил в МФТИ на бюджет</strong>.</p>
+        </article>
+
+        <article class="reveal rounded-2xl border border-white/10 bg-gradient-to-br from-white/[.07] to-transparent p-6">
+          <div class="flex items-center gap-3 font-mono text-lg font-semibold">
+            <span class="text-white/50">с нуля</span>
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-teal" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span class="text-teal">84 балла</span>
+          </div>
+          <p class="mt-3 text-white/75">Решение сдавать физику пришло в середине 11 класса. За <strong class="text-white">8 месяцев</strong> с нуля прошли всю программу по плану и добрали до 84 баллов — хватило на бюджет в региональном техническом вузе.</p>
+        </article>
+
+        <article class="reveal rounded-2xl border border-white/10 bg-gradient-to-br from-white/[.07] to-transparent p-6">
+          <div class="flex items-center gap-3 font-mono text-lg font-semibold">
+            <span class="text-white/50">62</span>
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-teal" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span class="text-teal">98 баллов</span>
+          </div>
+          <p class="mt-3 text-white/75">Крепкий ученик, который «застрял» на второй части. Точечно разобрали механику и электродинамику уровня С — итог <strong class="text-white">98 баллов</strong> и место в МГУ.</p>
+        </article>
+
+        <article class="reveal rounded-2xl border border-white/10 bg-gradient-to-br from-white/[.07] to-transparent p-6">
+          <div class="flex items-center gap-3 font-mono text-lg font-semibold">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-amber" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 21h8M12 17v4M6 4h12v4a6 6 0 0 1-12 0zM6 6H4v1a3 3 0 0 0 2 2M18 6h2v1a3 3 0 0 1-2 2"/></svg>
+            <span class="text-amber">Призёр олимпиады</span>
+          </div>
+          <p class="mt-3 text-white/75">Год олимпиадной подготовки в 10 классе — от школьного этапа до <strong class="text-white">призёрства на региональном этапе</strong> всероссийской олимпиады. Дальше — целимся в заключительный.</p>
+        </article>
+      </div>
+
+      <div class="reveal mt-10">
+        <a href="#contact" class="inline-flex items-center gap-2 rounded-xl bg-amber px-6 py-3.5 font-semibold text-white shadow-lift transition hover:bg-amber-d">
+          Хочу такой же результат
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= REVIEWS ================= -->
+  <section id="reviews" class="mx-auto max-w-6xl px-5 py-24">
+    <div class="reveal max-w-2xl">
+      <span class="font-mono text-sm font-semibold text-teal-d">// что говорят ученики и родители</span>
+      <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Отзывы</h2>
+    </div>
+
+    <div class="mt-12 columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5 [&>*]:break-inside-avoid">
+      <!-- review -->
+      <figure class="reveal rounded-2xl border border-mist bg-white p-6 shadow-soft">
+        <div class="flex gap-0.5 text-amber" aria-label="5 из 5">
+          <svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg>
+        </div>
+        <blockquote class="mt-4 text-[15px] leading-relaxed text-ink/85">«Физику ненавидела весь 10 класс — казалось, это просто набор формул. Владислава объясняет так, что вдруг всё начинает складываться. К концу 11-го решала вторую часть спокойно, сдала на 89.»</blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <img src="assets/reviews/r1.jpg" alt="Мария" loading="lazy" class="h-10 w-10 flex-none rounded-full object-cover ring-1 ring-mist" />
+          <span><span class="block text-sm font-semibold">Мария</span><span class="block text-xs text-steel">выпускница · ЕГЭ 89 баллов</span></span>
+        </figcaption>
+      </figure>
+
+      <figure class="reveal rounded-2xl border border-mist bg-white p-6 shadow-soft">
+        <div class="flex gap-0.5 text-amber" aria-label="5 из 5">
+          <svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg>
+        </div>
+        <blockquote class="mt-4 text-[15px] leading-relaxed text-ink/85">«Искали репетитора сыну в 9 классе перед ОГЭ. За полгода не только подтянули предмет до пятёрки, но и появился интерес — теперь идёт в физмат-класс. Отдельное спасибо за спокойствие и терпение.»</blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <img src="assets/reviews/r2.jpg" alt="Елена" loading="lazy" class="h-10 w-10 flex-none rounded-full object-cover ring-1 ring-mist" />
+          <span><span class="block text-sm font-semibold">Елена</span><span class="block text-xs text-steel">мама ученика · ОГЭ, 9 класс</span></span>
+        </figcaption>
+      </figure>
+
+      <figure class="reveal rounded-2xl border border-mist bg-white p-6 shadow-soft">
+        <div class="flex gap-0.5 text-amber" aria-label="5 из 5">
+          <svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg>
+        </div>
+        <blockquote class="mt-4 text-[15px] leading-relaxed text-ink/85">«Занимались дистанционно, я из Казахстана — разница в часовых поясах вообще не мешала. Доска, записи занятий, конспекты под рукой. Поступил в ИТМО, чего и хотел.»</blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <img src="assets/reviews/r3.jpg" alt="Тимур" loading="lazy" class="h-10 w-10 flex-none rounded-full object-cover ring-1 ring-mist" />
+          <span><span class="block text-sm font-semibold">Тимур</span><span class="block text-xs text-steel">выпускник · поступил в ИТМО</span></span>
+        </figcaption>
+      </figure>
+
+      <figure class="reveal rounded-2xl border border-mist bg-white p-6 shadow-soft">
+        <div class="flex gap-0.5 text-amber" aria-label="5 из 5">
+          <svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg>
+        </div>
+        <blockquote class="mt-4 text-[15px] leading-relaxed text-ink/85">«Начинали ради школьной программы, а закончили олимпиадой. Владислава видит, когда ребёнку становится тесно в рамках, и даёт задачи посложнее. Сын взял призёра региона в 10 классе.»</blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <img src="assets/reviews/r4.jpg" alt="Дмитрий" loading="lazy" class="h-10 w-10 flex-none rounded-full object-cover ring-1 ring-mist" />
+          <span><span class="block text-sm font-semibold">Дмитрий</span><span class="block text-xs text-steel">папа ученика · олимпиадная физика</span></span>
+        </figcaption>
+      </figure>
+
+      <figure class="reveal rounded-2xl border border-mist bg-white p-6 shadow-soft">
+        <div class="flex gap-0.5 text-amber" aria-label="5 из 5">
+          <svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg>
+        </div>
+        <blockquote class="mt-4 text-[15px] leading-relaxed text-ink/85">«На первом курсе физтеха физика неожиданно оказалась стеной. Пара месяцев занятий — и разобрался с механикой и матанализом задач, закрыл сессию без пересдач. Спасибо, что говорите на одном языке.»</blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <img src="assets/reviews/r5.jpg" alt="Артём" loading="lazy" class="h-10 w-10 flex-none rounded-full object-cover ring-1 ring-mist" />
+          <span><span class="block text-sm font-semibold">Артём</span><span class="block text-xs text-steel">студент 1 курса · общая физика</span></span>
+        </figcaption>
+      </figure>
+
+      <figure class="reveal rounded-2xl border border-mist bg-white p-6 shadow-soft">
+        <div class="flex gap-0.5 text-amber" aria-label="5 из 5">
+          <svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg><svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="M10 1l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L4.6 17.6l1-6L1.3 7.4l6-.9z"/></svg>
+        </div>
+        <blockquote class="mt-4 text-[15px] leading-relaxed text-ink/85">«Что подкупило сразу — на пробном честно сказали, где мы стоим и над чем работать, без завышенных обещаний. Потом каждую неделю приходил короткий отчёт о прогрессе дочери. Начинали с 54 на пробнике, ЕГЭ сдали на 82.»</blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <img src="assets/reviews/r6.jpg" alt="Ольга" loading="lazy" class="h-10 w-10 flex-none rounded-full object-cover ring-1 ring-mist" />
+          <span><span class="block text-sm font-semibold">Ольга</span><span class="block text-xs text-steel">мама ученицы · ЕГЭ 82 балла</span></span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= PROCESS + PRICING ================= -->
+  <section id="process" class="border-y border-mist bg-white">
+    <div class="mx-auto max-w-6xl px-5 py-24">
+      <div class="reveal max-w-2xl">
+        <span class="font-mono text-sm font-semibold text-teal-d">// как всё устроено</span>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">От диагностики до результата</h2>
+        <p class="mt-4 text-lg leading-relaxed text-steel">Понятный маршрут — вы всегда знаете, на каком этапе находитесь и что дальше.</p>
+      </div>
+
+      <!-- этапы -->
+      <ol class="reveal mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <li class="relative rounded-2xl border border-mist bg-paper p-5">
+          <span class="font-mono text-sm font-bold text-teal-d">01</span>
+          <h3 class="mt-2 font-semibold">Диагностика</h3>
+          <p class="mt-1.5 text-sm text-steel">Пробный урок: оцениваем уровень и цель по баллам.</p>
+        </li>
+        <li class="relative rounded-2xl border border-mist bg-paper p-5">
+          <span class="font-mono text-sm font-bold text-teal-d">02</span>
+          <h3 class="mt-2 font-semibold">План</h3>
+          <p class="mt-1.5 text-sm text-steel">Составляю персональный маршрут подготовки под дедлайн.</p>
+        </li>
+        <li class="relative rounded-2xl border border-mist bg-paper p-5">
+          <span class="font-mono text-sm font-bold text-teal-d">03</span>
+          <h3 class="mt-2 font-semibold">Занятия</h3>
+          <p class="mt-1.5 text-sm text-steel">Теория через смысл + разбор задач на интерактивной доске.</p>
+        </li>
+        <li class="relative rounded-2xl border border-mist bg-paper p-5">
+          <span class="font-mono text-sm font-bold text-teal-d">04</span>
+          <h3 class="mt-2 font-semibold">Пробники</h3>
+          <p class="mt-1.5 text-sm text-steel">Регулярные пробные ЕГЭ с проверкой по критериям ФИПИ.</p>
+        </li>
+        <li class="relative rounded-2xl border border-mist bg-paper p-5">
+          <span class="font-mono text-sm font-bold text-teal-d">05</span>
+          <h3 class="mt-2 font-semibold">Результат</h3>
+          <p class="mt-1.5 text-sm text-steel">Выходим на цель по баллам и поступление в желаемый вуз.</p>
+        </li>
+      </ol>
+
+      <!-- тарифы -->
+      <div class="mt-16 grid gap-5 lg:grid-cols-3">
+        <div class="reveal flex flex-col rounded-2xl border border-mist bg-paper p-7">
+          <h3 class="text-lg font-semibold">Индивидуально</h3>
+          <p class="mt-1 text-sm text-steel">Один на один, максимум внимания</p>
+          <div class="mt-5 font-mono"><span class="text-3xl font-bold">2 500&nbsp;₽</span><span class="text-steel"> / 60 мин</span></div>
+          <ul class="mt-5 flex-1 space-y-2.5 text-sm text-ink/80">
+            <li class="flex gap-2"><svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 flex-none text-teal-d" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg>Персональный план и темп</li>
+            <li class="flex gap-2"><svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 flex-none text-teal-d" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg>Домашние задания с разбором</li>
+            <li class="flex gap-2"><svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 flex-none text-teal-d" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg>Записи и конспекты</li>
+          </ul>
+          <a href="#contact" class="mt-6 rounded-xl border border-ink/15 px-5 py-3 text-center font-semibold transition hover:bg-ink hover:text-white">Выбрать</a>
+        </div>
+
+        <div class="reveal relative flex flex-col rounded-2xl border-2 border-teal bg-ink p-7 text-white shadow-lift lg:-mt-3">
+          <span class="absolute -top-3 left-7 rounded-full bg-amber px-3 py-1 text-xs font-semibold">Популярный</span>
+          <h3 class="text-lg font-semibold">Мини-группа</h3>
+          <p class="mt-1 text-sm text-white/60">2–4 ученика одного уровня</p>
+          <div class="mt-5 font-mono"><span class="text-3xl font-bold">1 400&nbsp;₽</span><span class="text-white/60"> / 90 мин</span></div>
+          <ul class="mt-5 flex-1 space-y-2.5 text-sm text-white/85">
+            <li class="flex gap-2"><svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg>Дешевле при том же результате</li>
+            <li class="flex gap-2"><svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg>Разбор задач и общий прогресс</li>
+            <li class="flex gap-2"><svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg>Пробники и проверка по ФИПИ</li>
+          </ul>
+          <a href="#contact" class="mt-6 rounded-xl bg-amber px-5 py-3 text-center font-semibold transition hover:bg-amber-d">Записаться</a>
+        </div>
+
+        <div class="reveal flex flex-col rounded-2xl border border-mist bg-paper p-7">
+          <h3 class="text-lg font-semibold">Интенсив перед ЕГЭ</h3>
+          <p class="mt-1 text-sm text-steel">Спринт на 1–2 месяца до экзамена</p>
+          <div class="mt-5 font-mono"><span class="text-3xl font-bold">от 18 000&nbsp;₽</span><span class="text-steel"> / курс</span></div>
+          <ul class="mt-5 flex-1 space-y-2.5 text-sm text-ink/80">
+            <li class="flex gap-2"><svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 flex-none text-teal-d" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg>Прокачка слабых тем по итогам пробника</li>
+            <li class="flex gap-2"><svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 flex-none text-teal-d" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg>Плотный график занятий</li>
+            <li class="flex gap-2"><svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 flex-none text-teal-d" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg>Стратегия на самом экзамене</li>
+          </ul>
+          <a href="#contact" class="mt-6 rounded-xl border border-ink/15 px-5 py-3 text-center font-semibold transition hover:bg-ink hover:text-white">Обсудить</a>
+        </div>
+      </div>
+      <p class="reveal mt-5 text-center text-sm text-steel">Первый пробный урок — бесплатно. Работаю по договору, оплата по факту проведённых занятий.</p>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" class="relative overflow-hidden bg-ink text-white">
+    <div class="absolute inset-0 grid-physics opacity-30"></div>
+    <div class="pointer-events-none absolute -left-40 -top-20 h-96 w-96 rounded-full bg-amber/10 blur-3xl"></div>
+    <div class="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal/15 blur-3xl"></div>
+
+    <div class="relative mx-auto grid max-w-6xl gap-12 px-5 py-24 lg:grid-cols-2">
+      <!-- left -->
+      <div class="reveal">
+        <span class="font-mono text-sm font-semibold text-teal">// давайте начнём</span>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Запишитесь на бесплатный пробный урок</h2>
+        <p class="mt-4 max-w-md text-lg leading-relaxed text-white/65">Оставьте контакты — свяжусь в течение дня, обсудим цель и подберём формат. Или напишите сразу в мессенджер.</p>
+
+        <div class="mt-8 space-y-3">
+          <a href="https://t.me/chakhova_physics" class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-teal/40 hover:bg-white/10">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-teal" fill="currentColor"><path d="M21.9 4.3l-3.3 15.6c-.2 1.1-.9 1.4-1.9.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.1 13.6l-4.8-1.5c-1-.3-1-1 .2-1.5l18.7-7.2c.9-.3 1.6.2 1.7 1.9z"/></svg>
+            <span><span class="block text-sm font-semibold">Telegram</span><span class="block text-xs text-white/50">@chakhova_physics</span></span>
+          </a>
+          <a href="https://wa.me/70000000000" class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-teal/40 hover:bg-white/10">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-teal" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20zm4.5-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.8 1-.3.2-.5.1a6.5 6.5 0 0 1-1.9-1.2 7 7 0 0 1-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3A2.8 2.8 0 0 0 6.9 9c0 1.2.9 2.4 1 2.6s1.7 2.7 4.2 3.8c1.5.6 2 .7 2.7.6.4-.1 1.4-.6 1.6-1.1s.2-1 .1-1.1z"/></svg>
+            <span><span class="block text-sm font-semibold">WhatsApp</span><span class="block text-xs text-white/50">+7 000 000-00-00</span></span>
+          </a>
+          <a href="mailto:chakhova@physics.ru" class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-teal/40 hover:bg-white/10">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-teal" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg>
+            <span><span class="block text-sm font-semibold">Email</span><span class="block text-xs text-white/50">chakhova@physics.ru</span></span>
+          </a>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+          <a href="#" aria-label="ВКонтакте" class="grid h-10 w-10 place-items-center rounded-xl border border-white/10 text-white/70 transition hover:border-teal/40 hover:text-white">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12.8 16.4c-5 0-8.3-3.5-8.4-9.2h2.6c.1 4.2 2 6 3.5 6.4V7.2h2.4v3.6c1.5-.2 3-1.8 3.6-3.6h2.4c-.4 2.1-1.9 3.7-3 4.4 1.1.5 2.8 2 3.5 4.8h-2.7c-.5-1.8-1.9-3.2-3.8-3.4v3.4z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube" class="grid h-10 w-10 place-items-center rounded-xl border border-white/10 text-white/70 transition hover:border-teal/40 hover:text-white">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M22 8s-.2-1.5-.8-2.1c-.8-.8-1.6-.8-2-.9C16.4 4.8 12 4.8 12 4.8s-4.4 0-7.2.2c-.4.1-1.2.1-2 .9C2.2 6.5 2 8 2 8s-.2 1.7-.2 3.5v1c0 1.8.2 3.5.2 3.5s.2 1.5.8 2.1c.8.8 1.8.8 2.3.9 1.6.2 6.9.2 6.9.2s4.4 0 7.2-.2c.4-.1 1.2-.1 2-.9.6-.6.8-2.1.8-2.1s.2-1.7.2-3.5v-1C22.2 9.7 22 8 22 8zM10 14.6V9.4l4.5 2.6z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- right: форма -->
+      <div class="reveal">
+        <form id="lead-form" novalidate
+              action="https://formsubmit.co/ajax/vwinterdev@gmail.com" method="POST"
+              class="rounded-2xl border border-white/10 bg-white/[.05] p-6 backdrop-blur-sm sm:p-8">
+          <!-- служебные поля FormSubmit -->
+          <input type="hidden" name="_subject" value="Заявка на пробный урок с сайта" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <div class="space-y-4">
+            <div>
+              <label for="f-name" class="mb-1.5 block text-sm text-white/70">Как вас зовут</label>
+              <input id="f-name" name="name" type="text" required placeholder="Имя"
+                class="w-full rounded-xl border border-white/15 bg-ink/40 px-4 py-3 text-white placeholder-white/30 outline-none transition focus:border-teal focus:ring-2 focus:ring-teal/30" />
+            </div>
+            <div>
+              <label for="f-contact" class="mb-1.5 block text-sm text-white/70">Телефон или email</label>
+              <input id="f-contact" name="contact" type="text" required placeholder="+7 ··· или you@mail.ru"
+                class="w-full rounded-xl border border-white/15 bg-ink/40 px-4 py-3 text-white placeholder-white/30 outline-none transition focus:border-teal focus:ring-2 focus:ring-teal/30" />
+            </div>
+            <div>
+              <label for="f-msg" class="mb-1.5 block text-sm text-white/70">Сообщение <span class="text-white/40">(необязательно)</span></label>
+              <textarea id="f-msg" name="message" rows="3" placeholder="Класс, цель по баллам, когда планируете сдавать…"
+                class="w-full resize-none rounded-xl border border-white/15 bg-ink/40 px-4 py-3 text-white placeholder-white/30 outline-none transition focus:border-teal focus:ring-2 focus:ring-teal/30"></textarea>
+            </div>
+          </div>
+
+          <button type="submit"
+            class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-amber px-6 py-3.5 font-semibold text-white shadow-lift transition hover:bg-amber-d">
+            Записаться на пробный урок
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+
+          <p id="form-status" class="mt-4 hidden rounded-xl bg-teal/15 px-4 py-3 text-sm text-teal ring-1 ring-teal/30" role="status"></p>
+          <p class="mt-4 text-center text-xs text-white/40">Нажимая кнопку, вы соглашаетесь на обработку данных. Отвечу в течение дня.</p>
+        </form>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <footer class="relative border-t border-white/10">
+      <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 text-sm text-white/50 sm:flex-row">
+        <span>© 2026 · Владислава Чахова — репетитор по физике</span>
+        <span class="font-mono text-white/40">«Физика — это логика, а не зубрёжка»</span>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ================= JS ================= -->
+  <script>
+    // мобильное меню
+    const burger = document.getElementById('burger');
+    const mobile = document.getElementById('mobile');
+    burger.addEventListener('click', () => mobile.classList.toggle('hidden'));
+    mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobile.classList.add('hidden')));
+
+    // тень навбара при скролле
+    const nav = document.getElementById('nav');
+    const onScroll = () => nav.classList.toggle('shadow-lift', window.scrollY > 20);
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+
+    // scroll-reveal
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e, i) => {
+          if (e.isIntersecting) {
+            e.target.style.transitionDelay = Math.min(i * 60, 180) + 'ms';
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    }
+
+    // счётчики метрик
+    const animateCount = (el) => {
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '';
+      if (reduce) { el.textContent = target + suffix; return; }
+      const dur = 1400; const start = performance.now();
+      const step = (now) => {
+        const p = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const counters = document.querySelectorAll('[data-count]');
+    const cio = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { animateCount(e.target); cio.unobserve(e.target); } });
+    }, { threshold: 0.5 });
+    counters.forEach(el => cio.observe(el));
+
+    // форма
+    const form = document.getElementById('lead-form');
+    const status = document.getElementById('form-status');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const setStatus = (msg, ok) => {
+      status.textContent = msg;
+      status.className = 'mt-4 rounded-xl px-4 py-3 text-sm ring-1 ' +
+        (ok ? 'bg-teal/15 text-teal ring-teal/30' : 'bg-amber/15 text-amber ring-amber/30');
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = form.name.value.trim();
+      const contact = form.contact.value.trim();
+      [form.name, form.contact].forEach(f => f.classList.remove('border-amber','ring-2','ring-amber/40'));
+      if (!name || !contact) {
+        [form.name, form.contact].forEach(f => { if (!f.value.trim()) f.classList.add('border-amber','ring-2','ring-amber/40'); });
+        setStatus('Заполните имя и контакт — так я смогу с вами связаться.', false);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const label = submitBtn.innerHTML;
+      submitBtn.innerHTML = 'Отправляю…';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form),
+        });
+        if (!res.ok) throw new Error('bad status');
+        setStatus('Спасибо, ' + name + '! Заявка отправлена — свяжусь с вами в течение дня.', true);
+        form.reset();
+      } catch (err) {
+        setStatus('Не удалось отправить. Напишите мне в Telegram или на почту — контакты слева.', false);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = label;
+      }
+    });
+  </script>
+</body>
+</html>

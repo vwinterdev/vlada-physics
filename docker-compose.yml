@@ -1,0 +1,27 @@
+services:
+  vlada-physics:
+    image: ghcr.io/<owner>/<repo>:latest   # подставь свой owner/repo (lowercase)
+    container_name: vlada-physics
+    pull_policy: always
+    restart: unless-stopped
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      # >>> ПОДГОНИ ПОД СВОЙ TRAEFIK <<<
+      - "traefik.docker.network=traefik"                                  # имя сети, где живёт traefik
+      - "traefik.http.routers.vlada.rule=Host(`physics.example.com`)"     # твой домен
+      - "traefik.http.routers.vlada.entrypoints=websecure"               # entrypoint (обычно websecure/https)
+      - "traefik.http.routers.vlada.tls=true"
+      - "traefik.http.routers.vlada.tls.certresolver=letsencrypt"        # имя certresolver из статики traefik
+      - "traefik.http.services.vlada.loadbalancer.server.port=80"        # порт внутри контейнера
+
+      # (опц.) редирект http -> https
+      - "traefik.http.routers.vlada-http.rule=Host(`physics.example.com`)"
+      - "traefik.http.routers.vlada-http.entrypoints=web"
+      - "traefik.http.routers.vlada-http.middlewares=vlada-redirect"
+      - "traefik.http.middlewares.vlada-redirect.redirectscheme.scheme=https"
+
+networks:
+  traefik:
+    external: true
