@@ -1,8 +1,16 @@
+# syntax=docker/dockerfile:1
+
 # ---- build stage: сборка Vite ----
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+
+# сперва только манифесты — слой с зависимостями кэшируется, пока они не менялись
+COPY package.json package-lock.json ./
+# npm ci = чистая воспроизводимая установка по lock; кэш npm переживает пересборки
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
+
+# исходники и билд
 COPY . .
 RUN npm run build
 
