@@ -1,6 +1,6 @@
 services:
   vlada-physics:
-    image: ghcr.io/<owner>/<repo>:latest   # подставь свой owner/repo (lowercase)
+    image: ghcr.io/vwinterdev/vlada-physics:latest
     container_name: vlada-physics
     pull_policy: always
     restart: unless-stopped
